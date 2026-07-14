@@ -1,0 +1,40 @@
+.diff-viewer {
+  display: flex;
+  gap: 1px;
+  height: 280px;
+  overflow: hidden;
+}
+
+.diff-viewer__panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.diff-viewer__header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-muted);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.diff-viewer__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+}
+
+.diff-viewer__placeholder {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+  opacity: 0.6;
+}
+
+.diff-viewer__divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}

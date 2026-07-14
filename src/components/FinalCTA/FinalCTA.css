@@ -1,0 +1,93 @@
+.final-cta {
+  position: relative;
+  padding: var(--section-padding) 0;
+  z-index: var(--z-content);
+}
+
+.final-cta__container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.final-cta__card {
+  position: relative;
+  text-align: center;
+  padding: var(--spacing-5xl) var(--spacing-3xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  overflow: hidden;
+}
+
+.final-cta__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(91, 140, 255, 0.08) 0%,
+    rgba(0, 217, 255, 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.final-cta__title {
+  position: relative;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--spacing-xl);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.final-cta__actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.final-cta__btn {
+  padding: 14px 28px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.final-cta__btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.final-cta__btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(91, 140, 255, 0.2);
+}
+
+.final-cta__btn--secondary {
+  background: var(--glass-bg);
+  color: var(--color-text);
+  border: 1px solid var(--glass-border);
+}
+
+.final-cta__btn--secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--glass-border-hover);
+}
+
+@media (max-width: 768px) {
+  .final-cta { padding: var(--spacing-4xl) 0; }
+  .final-cta__card { padding: var(--spacing-3xl) var(--spacing-xl); }
+  .final-cta__title { font-size: var(--font-size-2xl); }
+  .final-cta__actions { flex-direction: column; }
+  .final-cta__btn { width: 100%; text-align: center; }
+}

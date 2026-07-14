@@ -1,0 +1,296 @@
+/* Trigger Wrap */
+.rw__trigger-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Tooltip */
+.rw__tooltip {
+  position: absolute;
+  right: 62px;
+  background: var(--color-text);
+  color: var(--color-background);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rw__tooltip::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--color-text);
+}
+
+.rw__trigger-wrap:hover .rw__tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Floating Trigger Button */
+.rw__trigger {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5B8CFF, #7C3AED);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(91, 140, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: rw-pulse 3s ease-in-out infinite;
+}
+
+.rw__trigger:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 28px rgba(91, 140, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: none;
+}
+
+.rw__trigger:active {
+  transform: scale(0.95);
+}
+
+@keyframes rw-pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(91, 140, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3); }
+  50% { box-shadow: 0 4px 28px rgba(91, 140, 255, 0.6), 0 2px 12px rgba(124, 58, 237, 0.3); }
+}
+
+/* Panel */
+.rw__panel {
+  position: fixed;
+  bottom: 88px;
+  right: 24px;
+  width: 340px;
+  background: var(--glass-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 24px rgba(91, 140, 255, 0.08);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: rw-slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes rw-slide-up {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.rw__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rw__panel-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.rw__panel-close {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.rw__panel-close:hover {
+  background: var(--glass-bg-hover);
+  color: var(--color-text);
+}
+
+/* Success Animation */
+.rw__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  animation: rw-success-in 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes rw-success-in {
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.rw__success-icon {
+  font-size: 3rem;
+  animation: rw-bounce 0.6s ease-out;
+}
+
+@keyframes rw-bounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.3); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.rw__success-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.75rem 0 0.3rem;
+  color: var(--color-text);
+}
+
+.rw__success-text {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* Form */
+.rw__form {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  animation: rw-fade-in 0.3s ease-out;
+}
+
+@keyframes rw-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.rw__rating-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rw__star-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--color-border);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rw__star-btn:hover,
+.rw__star-btn--active {
+  color: #FBBF24;
+  transform: scale(1.2);
+}
+
+.rw__star-btn--active {
+  animation: rw-star-pop 0.3s ease-out;
+}
+
+@keyframes rw-star-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1.2); }
+}
+
+.rw__rating-text {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+
+.rw__input,
+.rw__textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-family: var(--font-family);
+  outline: none;
+  transition: all 0.2s;
+  resize: none;
+}
+
+.rw__input:focus,
+.rw__textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.1);
+}
+
+.rw__input::placeholder,
+.rw__textarea::placeholder {
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+.rw__submit {
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #5B8CFF, #7C3AED);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rw__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(91, 140, 255, 0.4);
+}
+
+.rw__submit:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
+.rw__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .rw__panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    bottom: 80px;
+  }
+
+  .rw__trigger-wrap {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .rw__tooltip {
+    display: none;
+  }
+}

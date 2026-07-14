@@ -1,0 +1,71 @@
+.ai-explain {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-height: 280px;
+  overflow: auto;
+}
+
+.ai-explain__header {
+  display: flex;
+  align-items: center;
+}
+
+.ai-explain__badge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(91, 140, 255, 0.1);
+  border: 1px solid rgba(91, 140, 255, 0.2);
+  color: #5B8CFF;
+}
+
+.ai-explain__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.ai-explain__action {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.ai-explain__action:hover {
+  background: rgba(91, 140, 255, 0.05);
+  border-color: rgba(91, 140, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.ai-explain__action-icon {
+  font-size: var(--font-size-lg);
+}
+
+.ai-explain__action-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.ai-explain__chat {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+}
+
+.ai-explain__placeholder {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+  opacity: 0.6;
+}
