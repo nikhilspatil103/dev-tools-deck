@@ -32,6 +32,7 @@
   align-items: center;
   text-align: center;
   gap: var(--spacing-2xl);
+  margin-bottom: 12px;
 }
 
 .hero__tagline {
@@ -216,6 +217,62 @@
     rgba(8, 145, 178, 0.03) 40%,
     transparent 70%
   );
+}
+
+[data-theme="light"] .hero__container {
+  color: #E6EDF3;
+}
+
+[data-theme="light"] .hero {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    #0a0e1a;
+  background-size: 50px 80px, 80px 80px, 100% 100%;
+}
+
+[data-theme="light"] .hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  /* background: linear-gradient(to bottom, transparent, #ffffff); */
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-theme="light"] .hero__heading {
+  color: #E6EDF3;
+}
+
+[data-theme="light"] .hero__tagline {
+  color: #8b949e;
+}
+
+[data-theme="light"] .hero__subtitle {
+  color: #8b949e;
+}
+
+[data-theme="light"] .hero__badge {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .hero__badge-text {
+  color: #8b949e;
+}
+
+[data-theme="light"] .hero__btn--secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #E6EDF3;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .hero__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 1024px) {

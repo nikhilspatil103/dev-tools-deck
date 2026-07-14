@@ -241,3 +241,55 @@
     display: none;
   }
 }
+
+[data-theme="light"] .navbar {
+  background: rgba(10, 14, 26, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .navbar--scrolled {
+  background: rgba(10, 14, 26, 0.92);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="light"] .navbar__link {
+  color: #8b949e;
+}
+
+[data-theme="light"] .navbar__link:hover {
+  color: #E6EDF3;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .navbar__search {
+  color: #8b949e;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="light"] .navbar__search:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .navbar__theme-toggle {
+  color: #8b949e;
+}
+
+[data-theme="light"] .navbar__theme-toggle:hover {
+  color: #E6EDF3;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .navbar__signin {
+  color: #8b949e;
+}
+
+[data-theme="light"] .navbar__signin:hover {
+  color: #E6EDF3;
+}
+
+[data-theme="light"] .navbar__cta {
+  background: #E6EDF3;
+  color: #0a0e1a;
+}

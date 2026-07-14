@@ -3,6 +3,44 @@ import { useFrame } from '@react-three/fiber';
 import { Text, Edges } from '@react-three/drei';
 import * as THREE from 'three';
 
+const lightColors = ['#1355ef', '#1aec67', '#00D9FF', '#7f07ef', '#F59E0B', '#ed0808', '#de197f'];
+
+function RandomLights({ count = 12 }) {
+  const ref = useRef();
+  const lights = useMemo(() => {
+    return Array.from({ length: count }, (_, i) => ({
+      color: lightColors[i % lightColors.length],
+      speed: 0.3 + Math.random() * 0.5,
+      radius: 1.8 + Math.random() * 1.2,
+      yOffset: (Math.random() - 0.5) * 2.5,
+      phase: (i / count) * Math.PI * 2,
+    }));
+  }, [count]);
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    ref.current.children.forEach((child, i) => {
+      const l = lights[i];
+      const angle = t * l.speed + l.phase;
+      child.position.x = Math.sin(angle) * l.radius;
+      child.position.z = Math.cos(angle) * l.radius;
+      child.position.y = l.yOffset + Math.sin(t * 0.8 + l.phase) * 0.3;
+      child.material.opacity = 0.5 + Math.sin(t * 1.5 + l.phase) * 0.3;
+    });
+  });
+
+  return (
+    <group ref={ref}>
+      {lights.map((l, i) => (
+        <mesh key={i}>
+          <sphereGeometry args={[0.04, 8, 8]} />
+          <meshBasicMaterial color={l.color} transparent opacity={0.7} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 function HexFace({ position, rotation, icon, label, accent }) {
   return (
     <group position={position} rotation={rotation}>
@@ -116,6 +154,9 @@ function JsonCube() {
         <torusGeometry args={[1.35, 0.006, 6, 8]} />
         <meshBasicMaterial color="#00D9FF" transparent opacity={0.25} />
       </mesh>
+
+      {/* Random floating lights */}
+      <RandomLights />
     </group>
   );
 }
