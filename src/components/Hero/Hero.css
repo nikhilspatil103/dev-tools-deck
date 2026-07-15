@@ -329,4 +329,172 @@
   .hero__3d-container {
     aspect-ratio: 16 / 9;
   }
+
+  .hero__tool-rail {
+    display: none;
+  }
+}
+
+/* Tool Rails */
+.hero__tool-rail {
+  position: absolute;
+  top: 24%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  z-index: 10;
+}
+
+.hero__tool-rail--left {
+  left: 24px;
+}
+
+.hero__tool-rail--right {
+  right: 24px;
+}
+
+.hero__tool-rail-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(91, 140, 255, 0.3), transparent);
+  border-radius: 1px;
+}
+
+.hero__tool-rail--left .hero__tool-rail-line {
+  right: 0;
+}
+
+.hero__tool-rail--right .hero__tool-rail-line {
+  left: 0;
+}
+
+.hero__tool-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.hero__tool-node:hover {
+  transform: scale(1.08);
+}
+
+.hero__tool-node:hover .hero__tool-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hero__tool-rail--left .hero__tool-node {
+  flex-direction: row-reverse;
+}
+
+.hero__tool-connector {
+  width: 24px;
+  height: 2px;
+  background: var(--tool-color, rgba(91, 140, 255, 0.4));
+  opacity: 0.5;
+  border-radius: 1px;
+}
+
+.hero__tool-node:hover .hero__tool-connector {
+  opacity: 1;
+}
+
+.hero__tool-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(20, 25, 40, 0.8);
+  border: 1.5px solid var(--tool-color, rgba(91, 140, 255, 0.3));
+  color: var(--tool-color, #5B8CFF);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero__tool-node:hover .hero__tool-icon {
+  background: rgba(20, 25, 40, 0.95);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--tool-color) 30%, transparent);
+  border-color: var(--tool-color);
+}
+
+.hero__tool-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: #8b949e;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.hero__tool-node:hover .hero__tool-name {
+  color: var(--tool-color, #ffffff);
+}
+
+.hero__tool-tooltip {
+  position: absolute;
+  background: rgba(15, 18, 30, 0.95);
+  border: 1px solid var(--tool-color, rgba(91, 140, 255, 0.3));
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #c9d1d9;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20;
+}
+
+.hero__tool-rail--left .hero__tool-tooltip {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.hero__tool-rail--left .hero__tool-node:hover .hero__tool-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.hero__tool-rail--right .hero__tool-tooltip {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+
+.hero__tool-rail--right .hero__tool-node:hover .hero__tool-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (max-width: 1024px) {
+  .hero__tool-rail--left {
+    left: 12px;
+  }
+  .hero__tool-rail--right {
+    right: 12px;
+  }
+  .hero__tool-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
+  }
+  .hero__tool-name {
+    display: none;
+  }
+  .hero__tool-connector {
+    width: 16px;
+  }
 }
