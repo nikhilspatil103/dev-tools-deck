@@ -8,6 +8,7 @@ function Background() {
       <div className="background__glow background__glow--accent"></div>
       <div className="background__glow background__glow--secondary"></div>
       <div className="background__grid"></div>
+      
       <div className="background__noise"></div>
       <div className="background__circle background__circle--1"></div>
       <div className="background__circle background__circle--2"></div>
