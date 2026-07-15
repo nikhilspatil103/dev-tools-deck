@@ -17,6 +17,7 @@ import {
   VscTerminal,
   VscGlobe,
   VscKey,
+  VscTable,
 } from 'react-icons/vsc';
 
 export const categories = [
@@ -223,5 +224,15 @@ export const tools = [
     size: 'large',
     usage: '680K',
     accent: '#F97316',
+  },
+  {
+    id: 'excel-compare',
+    name: 'Excel Compare',
+    description: 'Compare Excel & CSV files side-by-side with cell-level diffs',
+    icon: VscTable,
+    category: 'Text',
+    size: 'large',
+    usage: '320K',
+    accent: '#10B981',
   },
 ];

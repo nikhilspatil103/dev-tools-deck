@@ -11,6 +11,7 @@ const toolRoutes = {
   'color-converter': '/tools/color-converter',
   'timestamp-converter': '/tools/timestamp-converter',
   'html-formatter': '/tools/html-formatter',
+  'excel-compare': '/tools/excel-compare',
 };
 
 function ToolCard({ tool }) {

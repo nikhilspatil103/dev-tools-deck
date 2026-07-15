@@ -16,6 +16,7 @@ import SqlFormatter from './pages/SqlFormatter/SqlFormatter';
 import ColorConverter from './pages/ColorConverter/ColorConverter';
 import TimestampConverter from './pages/TimestampConverter/TimestampConverter';
 import HtmlFormatter from './pages/HtmlFormatter/HtmlFormatter';
+import ExcelCompare from './pages/ExcelCompare/ExcelCompare';
 import Docs from './pages/Docs/Docs';
 import ReviewWidget from './components/ReviewWidget/ReviewWidget';
 import MouseGlow from './components/MouseGlow/MouseGlow';
@@ -39,6 +40,7 @@ function App() {
           <Route path="/tools/color-converter" element={<ColorConverter />} />
           <Route path="/tools/timestamp-converter" element={<TimestampConverter />} />
           <Route path="/tools/html-formatter" element={<HtmlFormatter />} />
+          <Route path="/tools/excel-compare" element={<ExcelCompare />} />
           <Route path="/docs" element={<Docs />} />
         </Routes>
       </ThemeProvider>

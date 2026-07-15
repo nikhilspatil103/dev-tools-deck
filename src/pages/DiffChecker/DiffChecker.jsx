@@ -6,6 +6,159 @@ import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
 import './DiffChecker.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
+function ImageDiff() {
+  const [leftImg, setLeftImg] = useState(null);
+  const [rightImg, setRightImg] = useState(null);
+  const [sliderPos, setSliderPos] = useState(50);
+  const [viewMode, setViewMode] = useState('slider');
+  const [diffImg, setDiffImg] = useState(null);
+  const containerRef = useRef(null);
+  const isDragging = useRef(false);
+
+  const handleDrop = useCallback((side) => (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer?.files?.[0] || e.target?.files?.[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    if (side === 'left') setLeftImg(url);
+    else setRightImg(url);
+  }, []);
+
+  const handleFile = useCallback((side) => (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    if (side === 'left') setLeftImg(url);
+    else setRightImg(url);
+    e.target.value = '';
+  }, []);
+
+  const handleMouseDown = () => { isDragging.current = true; };
+  const handleMouseUp = () => { isDragging.current = false; };
+  const handleMouseMove = useCallback((e) => {
+    if (!isDragging.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    setSliderPos(Math.max(0, Math.min(100, x)));
+  }, []);
+
+  // Generate pixel diff
+  useEffect(() => {
+    if (!leftImg || !rightImg || viewMode !== 'diff') { setDiffImg(null); return; }
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const imgL = new Image(); imgL.crossOrigin = 'anonymous';
+    const imgR = new Image(); imgR.crossOrigin = 'anonymous';
+    let loaded = 0;
+    const onLoad = () => {
+      loaded++;
+      if (loaded < 2) return;
+      const w = Math.max(imgL.width, imgR.width);
+      const h = Math.max(imgL.height, imgR.height);
+      canvas.width = w; canvas.height = h;
+      ctx.drawImage(imgL, 0, 0, w, h);
+      const dataL = ctx.getImageData(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(imgR, 0, 0, w, h);
+      const dataR = ctx.getImageData(0, 0, w, h);
+      const out = ctx.createImageData(w, h);
+      for (let i = 0; i < dataL.data.length; i += 4) {
+        const dr = Math.abs(dataL.data[i] - dataR.data[i]);
+        const dg = Math.abs(dataL.data[i+1] - dataR.data[i+1]);
+        const db = Math.abs(dataL.data[i+2] - dataR.data[i+2]);
+        const diff = dr + dg + db;
+        if (diff > 30) { out.data[i] = 255; out.data[i+1] = 60; out.data[i+2] = 80; out.data[i+3] = 255; }
+        else { out.data[i] = 30; out.data[i+1] = 30; out.data[i+2] = 30; out.data[i+3] = 255; }
+      }
+      ctx.putImageData(out, 0, 0);
+      setDiffImg(canvas.toDataURL());
+    };
+    imgL.onload = onLoad; imgR.onload = onLoad;
+    imgL.src = leftImg; imgR.src = rightImg;
+  }, [leftImg, rightImg, viewMode]);
+
+  return (
+    <div className="dc__image-diff">
+      <div className="dc__image-toolbar">
+        <button className={`dc__toolbar-btn ${viewMode === 'slider' ? 'dc__toolbar-btn--active' : ''}`} onClick={() => setViewMode('slider')}>Slider</button>
+        <button className={`dc__toolbar-btn ${viewMode === 'side' ? 'dc__toolbar-btn--active' : ''}`} onClick={() => setViewMode('side')}>Side by Side</button>
+        <button className={`dc__toolbar-btn ${viewMode === 'diff' ? 'dc__toolbar-btn--active' : ''}`} onClick={() => setViewMode('diff')} disabled={!leftImg || !rightImg}>Difference</button>
+      </div>
+
+      {(!leftImg || !rightImg) && (
+        <div className="dc__image-upload-row">
+          <div className="dc__image-dropzone" onDragOver={e => e.preventDefault()} onDrop={handleDrop('left')}>
+            {leftImg ? <img src={leftImg} alt="Left" className="dc__image-preview" /> : (
+              <>
+                <span className="dc__image-dropzone-icon">🖼️</span>
+                <span>Drop original image here</span>
+                <label className="dc__image-upload-btn">Browse<input type="file" accept="image/*" onChange={handleFile('left')} hidden /></label>
+              </>
+            )}
+          </div>
+          <div className="dc__image-dropzone" onDragOver={e => e.preventDefault()} onDrop={handleDrop('right')}>
+            {rightImg ? <img src={rightImg} alt="Right" className="dc__image-preview" /> : (
+              <>
+                <span className="dc__image-dropzone-icon">🖼️</span>
+                <span>Drop modified image here</span>
+                <label className="dc__image-upload-btn">Browse<input type="file" accept="image/*" onChange={handleFile('right')} hidden /></label>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {leftImg && rightImg && viewMode === 'slider' && (
+        <div
+          className="dc__image-slider"
+          ref={containerRef}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
+          <img src={rightImg} alt="Modified" className="dc__image-slider-img" />
+          <div className="dc__image-slider-clip" style={{ width: `${sliderPos}%` }}>
+            <img src={leftImg} alt="Original" className="dc__image-slider-img" />
+          </div>
+          <div className="dc__image-slider-handle" style={{ left: `${sliderPos}%` }} onMouseDown={handleMouseDown}>
+            <div className="dc__image-slider-line" />
+            <div className="dc__image-slider-grip">⟺</div>
+          </div>
+          <span className="dc__image-label dc__image-label--left">Original</span>
+          <span className="dc__image-label dc__image-label--right">Modified</span>
+        </div>
+      )}
+
+      {leftImg && rightImg && viewMode === 'side' && (
+        <div className="dc__image-side">
+          <div className="dc__image-side-panel">
+            <span className="dc__image-side-label">Original</span>
+            <img src={leftImg} alt="Original" />
+          </div>
+          <div className="dc__image-side-panel">
+            <span className="dc__image-side-label">Modified</span>
+            <img src={rightImg} alt="Modified" />
+          </div>
+        </div>
+      )}
+
+      {leftImg && rightImg && viewMode === 'diff' && (
+        <div className="dc__image-diff-result">
+          {diffImg ? <img src={diffImg} alt="Difference" /> : <span>Generating diff...</span>}
+          <span className="dc__image-diff-legend">Red = pixels that differ</span>
+        </div>
+      )}
+
+      {(leftImg || rightImg) && (
+        <div className="dc__image-actions">
+          <button className="dc__toolbar-btn" onClick={() => { setLeftImg(null); setRightImg(null); setDiffImg(null); }}>✕ Clear</button>
+          {leftImg && !rightImg && <label className="dc__toolbar-btn">Upload Modified<input type="file" accept="image/*" onChange={handleFile('right')} hidden /></label>}
+          {!leftImg && rightImg && <label className="dc__toolbar-btn">Upload Original<input type="file" accept="image/*" onChange={handleFile('left')} hidden /></label>}
+        </div>
+      )}
+    </div>
+  );
+}
 
 
 const SAMPLE_LEFT = `function greet(name) {
@@ -429,6 +582,7 @@ function DiffChecker() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   useToolTheme();
+  const [diffMode, setDiffMode] = useState('text');
   const [tabs, setTabs] = useState(() => {
     const saved = storage.get('dc_tabs');
     if (saved) { tabIdCounter = Math.max(...saved.map(t => t.id)) + 1; return saved; }
@@ -493,6 +647,10 @@ function DiffChecker() {
             Back
           </button>
           <h1 className="dc__title">Diff Checker</h1>
+          <div className="dc__mode-selector">
+            <button className={`dc__mode-btn ${diffMode === 'text' ? 'dc__mode-btn--active' : ''}`} onClick={() => setDiffMode('text')}>Text</button>
+            <button className={`dc__mode-btn ${diffMode === 'image' ? 'dc__mode-btn--active' : ''}`} onClick={() => setDiffMode('image')}>Image</button>
+          </div>
         </div>
         <div className="dc__header-right">
           <button className="dc__icon-btn" onClick={toggleTheme} title="Toggle theme">
@@ -540,7 +698,8 @@ function DiffChecker() {
       </div>
 
       {/* Active Tab Content */}
-      <DiffTab key={activeTab.id} tab={activeTab} updateTab={updateTab} monacoTheme={monacoTheme} />
+      {diffMode === 'text' && <DiffTab key={activeTab.id} tab={activeTab} updateTab={updateTab} monacoTheme={monacoTheme} />}
+      {diffMode === 'image' && <ImageDiff />}
     </div>
   );
 }

@@ -7,6 +7,7 @@ const LEFT_TOOLS = [
   { name: 'HTML', symbol: '</>', path: '/tools/html-formatter', color: '#F97316', tip: 'Beautify & minify HTML code' },
   { name: 'SQL', symbol: 'SQL', path: '/tools/sql-formatter', color: '#22C55E', tip: 'Format SQL queries with ease' },
   { name: 'Diff', symbol: '⇄', path: '/tools/diff-checker', color: '#EC4899', tip: 'Compare text & find differences' },
+  { name: 'Excel', symbol: '⊞', path: '/tools/excel-compare', color: '#10B981', tip: 'Compare Excel & CSV files' },
 ];
 
 const RIGHT_TOOLS = [
