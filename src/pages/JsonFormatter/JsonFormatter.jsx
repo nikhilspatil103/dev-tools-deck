@@ -281,6 +281,8 @@ function JsonTab({ tab, updateTab, monacoTheme, wordWrap, autoFormat, showSideba
               <div className="jf__panel-actions">
                 <button className="jf__panel-btn" onClick={handlePaste}>Paste</button>
                 <button className={`jf__panel-btn ${copiedPanel === 'input' ? 'jf__panel-btn--copied' : ''}`} onClick={() => { navigator.clipboard.writeText(input); setCopiedPanel('input'); setTimeout(() => setCopiedPanel(null), 3000); }}>{copiedPanel === 'input' ? '✓ Copied' : 'Copy'}</button>
+                <button className="jf__panel-btn" onClick={() => { if (input) setInput(JSON.stringify(input)); }} disabled={!input}>Escape</button>
+                <button className="jf__panel-btn" onClick={() => { try { const result = JSON.parse(input); setInput(typeof result === 'string' ? result : input); } catch {} }} disabled={!input}>Unescape</button>
               </div>
               <span className="jf__panel-info">{stats.lines} lines · {stats.chars} chars</span>
             </div>
