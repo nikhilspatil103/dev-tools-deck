@@ -141,6 +141,8 @@ function HtmlTab({ tab, updateTab, monacoTheme, wordWrap, indentSize }) {
   const [replaceTerm, setReplaceTerm] = useState('');
   const [searchCount, setSearchCount] = useState(0);
   const [validationIssues, setValidationIssues] = useState([]);
+  const [editorFullscreen, setEditorFullscreen] = useState(false);
+  const [zoom, setZoom] = useState(100);
   const inputEditorRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -268,6 +270,15 @@ function HtmlTab({ tab, updateTab, monacoTheme, wordWrap, indentSize }) {
         <button className="hf__toolbar-btn" onClick={handleDownload}><span>↓</span> Download</button>
         <button className="hf__toolbar-btn" onClick={handleUpload}><span>↑</span> Upload</button>
         <button className="hf__toolbar-btn" onClick={handleClear}><span>✕</span> Clear</button>
+        <div className="hf__toolbar-divider" />
+        <button className="hf__toolbar-btn" onClick={() => setZoom(z => Math.max(50, z - 10))}>−</button>
+        <span className="hf__toolbar-zoom">{zoom}%</span>
+        <button className="hf__toolbar-btn" onClick={() => setZoom(z => Math.min(150, z + 10))}>+</button>
+        <button className="hf__toolbar-btn" onClick={() => setZoom(100)}>Reset</button>
+        <div className="hf__toolbar-divider" />
+        <button className="hf__toolbar-btn" onClick={() => setEditorFullscreen(true)}>
+          <span>⛶</span> Fullscreen
+        </button>
       </div>
 
       {/* Validation Issues */}
@@ -286,88 +297,152 @@ function HtmlTab({ tab, updateTab, monacoTheme, wordWrap, indentSize }) {
 
       {/* Main Content */}
       <div className="hf__main">
-        <div className="hf__editors">
-          <div className="hf__panel">
-            <div className="hf__panel-header">
-              <div className="hf__panel-dots">
-                <span className="hf__dot hf__dot--red" />
-                <span className="hf__dot hf__dot--yellow" />
-                <span className="hf__dot hf__dot--green" />
-              </div>
-              <span className="hf__panel-title">Input</span>
-              <span className="hf__panel-info">{stats.lines} lines · {stats.chars} chars</span>
+        <div className="hf__panel">
+          <div className="hf__panel-header">
+            <div className="hf__panel-dots">
+              <span className="hf__dot hf__dot--red" />
+              <span className="hf__dot hf__dot--yellow" />
+              <span className="hf__dot hf__dot--green" />
             </div>
-            <div className="hf__editor">
+            <span className="hf__panel-title">Input</span>
+            <span className="hf__panel-info">{stats.lines} lines · {stats.chars} chars</span>
+          </div>
+          <div className="hf__editor">
+            <MonacoEditor
+              height="100%"
+              language="html"
+              theme={monacoTheme}
+              value={input}
+              onChange={handleInputChange}
+              onMount={(editor) => { inputEditorRef.current = editor; }}
+              options={{
+                minimap: { enabled: false }, fontSize: Math.round(13 * zoom / 100),
+                fontFamily: 'JetBrains Mono, SF Mono, Fira Code, monospace',
+                lineNumbers: 'on', scrollBeyondLastLine: false,
+                wordWrap: wordWrap ? 'on' : 'off', padding: { top: 12 },
+                renderLineHighlight: 'line', overviewRulerBorder: false,
+                scrollbar: { verticalScrollbarSize: 6, horizontalScrollbarSize: 6 },
+              }}
+            />
+          </div>
+        </div>
+        <div className="hf__panel-divider" />
+        <div className="hf__panel">
+          <div className="hf__panel-header">
+            <div className="hf__panel-dots">
+              <span className="hf__dot hf__dot--red" />
+              <span className="hf__dot hf__dot--yellow" />
+              <span className="hf__dot hf__dot--green" />
+            </div>
+            <span className="hf__panel-title">{showPreview ? 'Preview' : 'Output'}</span>
+            {processTime > 0 && <span className="hf__panel-info">{processTime.toFixed(1)}ms</span>}
+          </div>
+          <div className="hf__editor">
+            {showPreview ? (
+              <iframe
+                className="hf__preview-frame"
+                srcDoc={output || input}
+                title="HTML Preview"
+                sandbox="allow-scripts"
+              />
+            ) : (
               <MonacoEditor
                 height="100%"
                 language="html"
                 theme={monacoTheme}
-                value={input}
-                onChange={handleInputChange}
-                onMount={(editor) => { inputEditorRef.current = editor; }}
+                value={output}
                 options={{
-                  minimap: { enabled: true, scale: 1, showSlider: 'always' }, fontSize: 13,
+                  readOnly: true, minimap: { enabled: false }, fontSize: Math.round(13 * zoom / 100),
                   fontFamily: 'JetBrains Mono, SF Mono, Fira Code, monospace',
                   lineNumbers: 'on', scrollBeyondLastLine: false,
                   wordWrap: wordWrap ? 'on' : 'off', padding: { top: 12 },
-                  renderLineHighlight: 'line', overviewRulerBorder: false,
+                  renderLineHighlight: 'none', overviewRulerBorder: false,
                   scrollbar: { verticalScrollbarSize: 6, horizontalScrollbarSize: 6 },
                 }}
               />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fullscreen Overlay */}
+      {editorFullscreen && (
+        <div className="hf__fullscreen-overlay">
+          <div className="hf__fullscreen-header">
+            <span className="hf__fullscreen-title">HTML Formatter — Fullscreen</span>
+            <div className="hf__fullscreen-controls">
+              <button className="hf__toolbar-btn" onClick={() => setShowPreview(!showPreview)}>
+                <span>👁</span> {showPreview ? 'Editor' : 'Preview'}
+              </button>
+              <div className="hf__toolbar-divider" />
+              <button className="hf__toolbar-btn" onClick={() => setZoom(z => Math.max(50, z - 10))}>−</button>
+              <span className="hf__toolbar-zoom">{zoom}%</span>
+              <button className="hf__toolbar-btn" onClick={() => setZoom(z => Math.min(150, z + 10))}>+</button>
+              <div className="hf__toolbar-divider" />
+              <button className="hf__toolbar-btn" onClick={() => setEditorFullscreen(false)}>
+                <span>✕</span> Exit
+              </button>
             </div>
           </div>
-          <div className="hf__panel">
-            <div className="hf__panel-header">
-              <div className="hf__panel-dots">
-                <span className="hf__dot hf__dot--red" />
-                <span className="hf__dot hf__dot--yellow" />
-                <span className="hf__dot hf__dot--green" />
+          <div className="hf__fullscreen-panels">
+            <div className="hf__fullscreen-panel">
+              <div className="hf__panel-header">
+                <span className="hf__panel-title">Input</span>
+                <span className="hf__panel-info">{stats.lines} lines · {stats.chars} chars</span>
               </div>
-              <span className="hf__panel-title">{showPreview ? 'Preview' : 'Output'}</span>
-              {processTime > 0 && <span className="hf__panel-info">{processTime.toFixed(1)}ms</span>}
-            </div>
-            <div className="hf__editor">
-              {showPreview ? (
-                <iframe
-                  className="hf__preview-frame"
-                  srcDoc={output || input}
-                  title="HTML Preview"
-                  sandbox="allow-scripts"
-                />
-              ) : (
+              <div className="hf__editor">
                 <MonacoEditor
                   height="100%"
                   language="html"
                   theme={monacoTheme}
-                  value={output}
+                  value={input}
+                  onChange={handleInputChange}
                   options={{
-                    readOnly: true, minimap: { enabled: true, scale: 1, showSlider: 'always' }, fontSize: 13,
+                    minimap: { enabled: false }, fontSize: Math.round(14 * zoom / 100),
                     fontFamily: 'JetBrains Mono, SF Mono, Fira Code, monospace',
                     lineNumbers: 'on', scrollBeyondLastLine: false,
                     wordWrap: wordWrap ? 'on' : 'off', padding: { top: 12 },
-                    renderLineHighlight: 'none', overviewRulerBorder: false,
+                    renderLineHighlight: 'line', overviewRulerBorder: false,
                     scrollbar: { verticalScrollbarSize: 6, horizontalScrollbarSize: 6 },
                   }}
                 />
-              )}
+              </div>
+            </div>
+            <div className="hf__panel-divider" />
+            <div className="hf__fullscreen-panel">
+              <div className="hf__panel-header">
+                <span className="hf__panel-title">{showPreview ? 'Preview' : 'Output'}</span>
+                {processTime > 0 && <span className="hf__panel-info">{processTime.toFixed(1)}ms</span>}
+              </div>
+              <div className="hf__editor">
+                {showPreview ? (
+                  <iframe
+                    className="hf__preview-frame"
+                    srcDoc={output || input}
+                    title="HTML Preview"
+                    sandbox="allow-scripts"
+                  />
+                ) : (
+                  <MonacoEditor
+                    height="100%"
+                    language="html"
+                    theme={monacoTheme}
+                    value={output}
+                    options={{
+                      readOnly: true, minimap: { enabled: false }, fontSize: Math.round(14 * zoom / 100),
+                      fontFamily: 'JetBrains Mono, SF Mono, Fira Code, monospace',
+                      lineNumbers: 'on', scrollBeyondLastLine: false,
+                      wordWrap: wordWrap ? 'on' : 'off', padding: { top: 12 },
+                      renderLineHighlight: 'none', overviewRulerBorder: false,
+                      scrollbar: { verticalScrollbarSize: 6, horizontalScrollbarSize: 6 },
+                    }}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
-
-        <aside className="hf__sidebar">
-          <div className="hf__stats-card">
-            <h3 className="hf__stats-title">Statistics</h3>
-            <div className="hf__stats-grid">
-              <div className="hf__stat"><span className="hf__stat-value">{stats.chars.toLocaleString()}</span><span className="hf__stat-label">Characters</span></div>
-              <div className="hf__stat"><span className="hf__stat-value">{stats.lines}</span><span className="hf__stat-label">Lines</span></div>
-              <div className="hf__stat"><span className="hf__stat-value">{stats.tags}</span><span className="hf__stat-label">Tags</span></div>
-              <div className="hf__stat"><span className="hf__stat-value">{stats.elements}</span><span className="hf__stat-label">Elements</span></div>
-              <div className="hf__stat"><span className="hf__stat-value">{stats.size > 1024 ? `${(stats.size / 1024).toFixed(1)}KB` : `${stats.size}B`}</span><span className="hf__stat-label">Size</span></div>
-              <div className="hf__stat"><span className="hf__stat-value">{processTime > 0 ? `${processTime.toFixed(1)}ms` : '—'}</span><span className="hf__stat-label">Time</span></div>
-            </div>
-          </div>
-        </aside>
-      </div>
+      )}
 
       <input ref={fileInputRef} type="file" accept=".html,.htm,.txt" onChange={handleFileChange} style={{ display: 'none' }} />
     </div>
@@ -385,7 +460,6 @@ function HtmlFormatter() {
   });
   const [activeTabId, setActiveTabId] = useState(() => storage.get('hf_activeTab') || tabs[0]?.id);
   const [editingTabId, setEditingTabId] = useState(null);
-  const [editingDescId, setEditingDescId] = useState(null);
   const [wordWrap, setWordWrap] = useState(true);
   const [indentSize, setIndentSize] = useState(2);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -425,10 +499,6 @@ function HtmlFormatter() {
     setEditingTabId(null);
   };
 
-  const updateDescription = (id, description) => {
-    setTabs(prev => { const next = prev.map(t => t.id === id ? { ...t, description } : t); storage.set('hf_tabs', next); return next; });
-    setEditingDescId(null);
-  };
 
   const toggleFullscreen = useCallback(() => {
     if (!isFullscreen) containerRef.current?.requestFullscreen?.();
@@ -501,22 +571,13 @@ function HtmlFormatter() {
               <option value={8}>8</option>
             </select>
           </label>
-          <button className="hf__icon-btn" onClick={toggleFullscreen} title="Fullscreen">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {isFullscreen ? (
-                <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
-              ) : (
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-              )}
-            </svg>
-          </button>
-          <button className="hf__icon-btn" onClick={toggleTheme} title="Toggle theme">
+          <button className="hf__toolbar-btn" onClick={toggleTheme} title="Toggle theme">
             {theme === 'dark' ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
               </svg>
             ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             )}
@@ -543,33 +604,22 @@ function HtmlFormatter() {
                   onClick={e => e.stopPropagation()}
                 />
               ) : (
-                <span className="hf__chrome-tab-name" onDoubleClick={() => setEditingTabId(tab.id)}>
+                <span className="hf__chrome-tab-name">
                   {tab.name}
                 </span>
               )}
-              {tab.description && <span className="hf__chrome-tab-desc" title={tab.description}>• {tab.description}</span>}
+              <button className="hf__chrome-tab-edit" onClick={e => { e.stopPropagation(); setEditingTabId(tab.id); }} title="Rename tab">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+              </button>
               {tabs.length > 1 && (
                 <button className="hf__chrome-tab-close" onClick={e => { e.stopPropagation(); closeTab(tab.id); }}>×</button>
               )}
             </div>
           ))}
           <button className="hf__chrome-tab-add" onClick={addTab} title="New tab">+</button>
-        </div>
-        <div className="hf__chrome-tab-desc-bar">
-          {editingDescId === activeTabId ? (
-            <input
-              className="hf__chrome-tab-desc-input"
-              defaultValue={activeTab.description}
-              autoFocus
-              placeholder="Add a description..."
-              onBlur={e => updateDescription(activeTabId, e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') updateDescription(activeTabId, e.target.value); }}
-            />
-          ) : (
-            <span className="hf__chrome-tab-desc-text" onClick={() => setEditingDescId(activeTabId)}>
-              {activeTab.description || 'Click to add description...'}
-            </span>
-          )}
         </div>
       </div>
 
