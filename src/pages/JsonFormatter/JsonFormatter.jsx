@@ -82,7 +82,7 @@ function JfTreeNode({ keyName, value, depth = 0 }) {
   );
 }
 
-function JsonTab({ tab, updateTab, monacoTheme, wordWrap, autoFormat, showSidebar, setShowSidebar }) {
+function JsonTab({ tab, updateTab, monacoTheme, handleEditorWillMount, wordWrap, autoFormat, showSidebar, setShowSidebar }) {
   const { input, output } = tab;
   const [isValid, setIsValid] = useState(true);
   const [error, setError] = useState(null);
@@ -292,6 +292,7 @@ function JsonTab({ tab, updateTab, monacoTheme, wordWrap, autoFormat, showSideba
                 height="100%"
                 language="json"
                 theme={monacoTheme}
+                beforeMount={handleEditorWillMount}
                 value={input}
                 onChange={handleInputChange}
                 onMount={(editor) => { inputEditorRef.current = editor; }}
@@ -338,6 +339,7 @@ function JsonTab({ tab, updateTab, monacoTheme, wordWrap, autoFormat, showSideba
                 <MonacoEditor
                   height="100%"
                   language="json"
+                  beforeMount={handleEditorWillMount}
                   theme={monacoTheme}
                   value={output}
                   options={{
@@ -390,6 +392,7 @@ function JsonTab({ tab, updateTab, monacoTheme, wordWrap, autoFormat, showSideba
                 <MonacoEditor
                   height="100%"
                   language="json"
+                  beforeMount={handleEditorWillMount}
                   theme={monacoTheme}
                   value={output}
                   options={{
@@ -483,7 +486,32 @@ function JsonFormatter() {
   const containerRef = useRef(null);
 
   const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
-  const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs';
+  const monacoTheme = theme === 'dark' ? 'devtools-dark' : 'devtools-light';
+
+  const handleEditorWillMount = (monaco) => {
+    monaco.editor.defineTheme('devtools-dark', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'string.key.json', foreground: '7DD3FC' },
+        { token: 'string.value.json', foreground: 'A5D6A7' },
+        { token: 'number', foreground: 'FFB74D' },
+        { token: 'keyword', foreground: 'CE93D8' },
+      ],
+      colors: { 'editor.background': '#0a0a0f' },
+    });
+    monaco.editor.defineTheme('devtools-light', {
+      base: 'vs',
+      inherit: true,
+      rules: [
+        { token: 'string.key.json', foreground: '1565C0' },
+        { token: 'string.value.json', foreground: '2E7D32' },
+        { token: 'number', foreground: 'E65100' },
+        { token: 'keyword', foreground: '7B1FA2' },
+      ],
+      colors: { 'editor.background': '#FDF8F4' },
+    });
+  };
 
   const addTab = () => {
     const newTab = createTab(`JSON ${tabs.length + 1}`);
@@ -639,7 +667,7 @@ function JsonFormatter() {
       )}
 
       {/* Active Tab Content */}
-      <JsonTab key={activeTab.id} tab={activeTab} updateTab={updateTab} monacoTheme={monacoTheme} wordWrap={wordWrap} autoFormat={autoFormat} showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+      <JsonTab key={activeTab.id} tab={activeTab} updateTab={updateTab} monacoTheme={monacoTheme} handleEditorWillMount={handleEditorWillMount} wordWrap={wordWrap} autoFormat={autoFormat} showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
     </div>
   );
 }
