@@ -18,7 +18,7 @@ function ExcelDiff({ tabId }) {
   const [leftName, setLeftName] = useState(() => storage.get(`ec_tab_${tabId}`)?.leftName || '');
   const [rightName, setRightName] = useState(() => storage.get(`ec_tab_${tabId}`)?.rightName || '');
   const [showOnlyDiffs, setShowOnlyDiffs] = useState(false);
-  const [zoom, setZoom] = useState(70);
+  const [zoom, setZoom] = useState(100);
   const [fullscreen, setFullscreen] = useState(false);
   const [stats, setStats] = useState({ added: 0, removed: 0, modified: 0, unchanged: 0 });
   const leftScrollRef = useRef(null);
