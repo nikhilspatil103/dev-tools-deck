@@ -15,6 +15,19 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>DevToolsDeck | Free, Fast & Secure Online Developer Utilities</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "DevToolsDeck",
+      "url": "https://devtoolsdeck.com",
+      "description": "Free online developer tools — JSON Formatter, Diff Checker, API Tester, JWT Decoder, SQL Formatter, Excel Compare & more. 100% client-side, no data leaves your browser.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": ["JSON Formatter", "Diff Checker", "API Tester", "JWT Decoder", "Base64 Encoder", "SQL Formatter", "Color Converter", "Timestamp Converter", "HTML Formatter", "Excel Compare"]
+    }
+    </script>
     <!-- GitHub Pages SPA redirect handler -->
     <script>
       (function(l) {
@@ -43,7 +56,22 @@
     </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <h1>DevToolsDeck — Free Online Developer Tools</h1>
+      <p>JSON Formatter & Validator, Diff Checker, API Tester, JWT Decoder, Base64 Encoder/Decoder, SQL Formatter, Color Converter, Unix Timestamp Converter, HTML Formatter, Excel Compare. All tools run 100% client-side — no data leaves your browser.</p>
+      <ul>
+        <li><a href="/tools/json-formatter">JSON Formatter & Validator</a></li>
+        <li><a href="/tools/diff-checker">Diff Checker - Compare Text Online</a></li>
+        <li><a href="/tools/jwt-decoder">JWT Decoder & Inspector</a></li>
+        <li><a href="/tools/base64">Base64 Encoder & Decoder</a></li>
+        <li><a href="/tools/api-tester">API Tester - Test REST APIs</a></li>
+        <li><a href="/tools/sql-formatter">SQL Formatter & Beautifier</a></li>
+        <li><a href="/tools/color-converter">Color Converter - HEX RGB HSL</a></li>
+        <li><a href="/tools/timestamp-converter">Unix Timestamp Converter</a></li>
+        <li><a href="/tools/html-formatter">HTML Formatter & Beautifier</a></li>
+        <li><a href="/tools/excel-compare">Excel Compare - Diff Spreadsheets</a></li>
+      </ul>
+    </noscript>
     <div id="root"></div>
     <!--
       This HTML file is a template.
