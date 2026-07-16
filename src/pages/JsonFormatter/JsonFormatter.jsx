@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
+import SEO from '../../components/SEO/SEO';
 import './JsonFormatter.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -541,6 +542,7 @@ function JsonFormatter() {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
+      <SEO title="JSON Formatter & Validator | 100% Client-Side & Secure - DevToolsDeck" description="Free online JSON formatter, validator & beautifier. Format, minify, and validate JSON data instantly. No data leaves your browser." />
       {isDragging && (
         <div className="jf__drop-overlay">
           <div className="jf__drop-content">

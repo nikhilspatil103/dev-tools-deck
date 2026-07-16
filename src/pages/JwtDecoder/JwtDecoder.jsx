@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
 import Minimap from '../../components/Minimap/Minimap';
+import SEO from '../../components/SEO/SEO';
 import './JwtDecoder.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -71,6 +72,7 @@ function JwtDecoder() {
 
   return (
     <div className="jwt">
+      <SEO title="JWT Decoder & Inspector | Decode JSON Web Tokens Online - DevToolsDeck" description="Free online JWT decoder. Inspect headers, payloads, and verify token structure instantly. No data sent to any server." />
       <header className="jwt__header">
         <div className="jwt__header-left">
           <a href="/" className="navbar__logo">

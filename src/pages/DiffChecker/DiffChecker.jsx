@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
 import { diffLines, diffWordsWithSpace } from 'diff';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
+import SEO from '../../components/SEO/SEO';
 import { storage } from '../../utils/storage';
 import './DiffChecker.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
@@ -634,6 +635,7 @@ function DiffChecker() {
 
   return (
     <div className="dc">
+      <SEO title="Diff Checker Online | Compare Text & Code Side by Side - DevToolsDeck" description="Free online diff checker to compare text, code, or files side by side. Highlights additions, deletions, and modifications instantly." />
       <header className="dc__header">
         <div className="dc__header-left">
           <a href="/" className="navbar__logo">

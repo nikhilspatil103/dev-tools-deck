@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
+import SEO from '../../components/SEO/SEO';
 import * as XLSX from 'xlsx';
 import './ExcelCompare.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
@@ -375,6 +376,7 @@ function ExcelCompare() {
 
   return (
     <div className="ec">
+      <SEO title="Excel Compare Online | Diff Two Spreadsheets Side by Side - DevToolsDeck" description="Free online Excel compare tool. Compare two spreadsheets or CSV files side by side with highlighted differences. No data uploaded." />
       <header className="ec__header">
         <div className="ec__header-left">
           <a href="/" className="navbar__logo">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
 import Minimap from '../../components/Minimap/Minimap';
+import SEO from '../../components/SEO/SEO';
 import './Base64.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -95,6 +96,7 @@ function Base64() {
 
   return (
     <div className="b64">
+      <SEO title="Base64 Encoder & Decoder Online | Free & Instant - DevToolsDeck" description="Encode or decode Base64 strings instantly. Supports text and file encoding. 100% client-side, no data leaves your browser." />
       <header className="b64__header">
         <div className="b64__header-left">
           <a href="/" className="navbar__logo">

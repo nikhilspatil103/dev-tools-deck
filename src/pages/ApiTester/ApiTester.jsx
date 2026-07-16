@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
 import Minimap from '../../components/Minimap/Minimap';
+import SEO from '../../components/SEO/SEO';
 import './ApiTester.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -408,6 +409,7 @@ function ApiTester() {
 
   return (
     <div className="at">
+      <SEO title="API Tester Online | Test REST APIs in Your Browser - DevToolsDeck" description="Free online API tester. Send GET, POST, PUT, DELETE requests and inspect responses. No backend, runs entirely in your browser." />
       {/* Header */}
       <header className="at__header">
         <div className="at__header-left">

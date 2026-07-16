@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
+import SEO from '../../components/SEO/SEO';
 import './SqlFormatter.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -400,6 +401,7 @@ function SqlFormatter() {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
+      <SEO title="SQL Formatter & Beautifier Online | Free SQL Pretty Print - DevToolsDeck" description="Free online SQL formatter and beautifier. Format, indent, and clean up SQL queries instantly. Supports multiple SQL dialects." />
       {isDragging && (
         <div className="sf__drop-overlay">
           <div className="sf__drop-content">

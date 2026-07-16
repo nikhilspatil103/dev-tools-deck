@@ -1,8 +1,14 @@
 import { useEffect } from 'react';
 
-function SEO() {
+const DEFAULT_TITLE = 'DevToolsDeck | Free, Fast & Secure Online Developer Utilities';
+const DEFAULT_DESC = 'Free online developer tools — JSON Formatter, Diff Checker, API Tester, JWT Decoder, SQL Formatter, Excel Compare & more. 100% client-side, no data leaves your browser.';
+
+function SEO({ title, description }) {
   useEffect(() => {
-    document.title = 'DevToolsDeck — Modern Developer Tools Platform';
+    const pageTitle = title || DEFAULT_TITLE;
+    const pageDesc = description || DEFAULT_DESC;
+
+    document.title = pageTitle;
 
     const setMeta = (name, content, property) => {
       const attr = property ? 'property' : 'name';
@@ -16,15 +22,15 @@ function SEO() {
       el.setAttribute('content', content);
     };
 
-    setMeta('description', 'Modern developer tools including JSON Formatter, API Tester, Diff Checker, XML Formatter, JWT Decoder and more. Fast, private, browser-based.');
-    setMeta(null, 'DevToolsDeck — Modern Developer Tools Platform', 'og:title');
-    setMeta(null, 'Modern developer tools including JSON Formatter, API Tester, Diff Checker, XML Formatter, JWT Decoder and more.', 'og:description');
+    setMeta('description', pageDesc);
+    setMeta(null, pageTitle, 'og:title');
+    setMeta(null, pageDesc, 'og:description');
     setMeta(null, 'website', 'og:type');
     setMeta('twitter:card', 'summary_large_image');
-    setMeta('twitter:title', 'DevToolsDeck — Modern Developer Tools Platform');
-    setMeta('twitter:description', 'Modern developer tools including JSON Formatter, API Tester, Diff Checker, XML Formatter, JWT Decoder and more.');
+    setMeta('twitter:title', pageTitle);
+    setMeta('twitter:description', pageDesc);
     setMeta('theme-color', '#09090B');
-  }, []);
+  }, [title, description]);
 
   return null;
 }

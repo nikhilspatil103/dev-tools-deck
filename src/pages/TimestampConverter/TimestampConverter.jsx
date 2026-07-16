@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
+import SEO from '../../components/SEO/SEO';
 import './TimestampConverter.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -106,6 +107,7 @@ function TimestampConverter() {
 
   return (
     <div className="ts">
+      <SEO title="Unix Timestamp Converter | Epoch to Date Online - DevToolsDeck" description="Free online Unix timestamp converter. Convert epoch timestamps to human-readable dates and vice versa. Supports multiple formats." />
       <header className="ts__header">
         <div className="ts__header-left">
           <a href="/" className="navbar__logo">

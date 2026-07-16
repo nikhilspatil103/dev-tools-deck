@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
+import SEO from '../../components/SEO/SEO';
 import './ColorConverter.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -275,6 +276,7 @@ function ColorConverter() {
 
   return (
     <div className="cc">
+      <SEO title="Color Converter Online | HEX, RGB, HSL & More - DevToolsDeck" description="Free online color converter. Convert between HEX, RGB, HSL, and other color formats instantly. Includes color picker and palette tools." />
       <header className="cc__header">
         <div className="cc__header-left">
           <a href="/" className="navbar__logo">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
 import { useTheme, useToolTheme } from '../../hooks/useTheme';
 import { storage } from '../../utils/storage';
+import SEO from '../../components/SEO/SEO';
 import './HtmlFormatter.css';
 import Logo3D from '../../components/Logo3D/Logo3D';
 
@@ -461,6 +462,7 @@ function HtmlFormatter() {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
+      <SEO title="HTML Formatter & Beautifier Online | Free HTML Pretty Print - DevToolsDeck" description="Free online HTML formatter and beautifier. Format, indent, and clean up HTML code instantly. 100% client-side processing." />
       {isDragging && (
         <div className="hf__drop-overlay">
           <div className="hf__drop-content">
